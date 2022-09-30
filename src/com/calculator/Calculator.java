@@ -17,10 +17,12 @@ public class Calculator {
             }
 
             return calculate(a, b, operation);
-        } catch (NumberFormatException exception) {
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new CalculatorException("Wrong argument count");
+        } catch (NumberFormatException e) {
             throw new CalculatorException("Error! Not number");
-        } catch (IllegalArgumentException | ArithmeticException | InputMismatchException exception) {
-            throw new CalculatorException(ofNullable(exception.getMessage()).orElse("Unknown error"));
+        } catch (IllegalArgumentException | ArithmeticException | InputMismatchException e) {
+            throw new CalculatorException(ofNullable(e.getMessage()).orElse("Unknown error"));
         }
     }
 

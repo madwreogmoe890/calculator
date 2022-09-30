@@ -35,6 +35,9 @@ public class Main {
     }
 
     private static void processLine(String line) throws IOException {
+        if (line.isEmpty()) {
+            return;
+        }
         String result;
         try {
             result = String.valueOf(calculator.calculateString(line));
