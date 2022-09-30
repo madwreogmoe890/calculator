@@ -3,6 +3,8 @@ import com.calculator.CalculatorException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -20,9 +22,13 @@ public class Main {
         String line = scanner.nextLine();
         System.out.println(line);
         try {
-            System.out.println(calculator.calculateString(line));
+            FileWriter output = new FileWriter("output.txt", false);
+            output.write(String.valueOf(calculator.calculateString(line)));
+            output.flush();
         } catch (CalculatorException exception) {
             System.out.println(exception.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
