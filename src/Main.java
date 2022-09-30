@@ -8,27 +8,40 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        String filename = "input.txt";
-        Scanner scanner;
-        try {
-            scanner = new Scanner(new File(filename));
-        } catch (FileNotFoundException e) {
-            System.out.println("Error! " + filename + " not found");
-            return;
-        }
+    private final static Calculator calculator = new Calculator();
+    private static Scanner input;
+    private static FileWriter output;
 
-        Calculator calculator = new Calculator();
-        String line = scanner.nextLine();
-        System.out.println(line);
+    public static void main(String[] args) {
+        String inputFile = "input.txt";
+        String outputFile = "output.txt";
+
         try {
-            FileWriter output = new FileWriter("output.txt", false);
-            output.write(String.valueOf(calculator.calculateString(line)));
-            output.flush();
-        } catch (CalculatorException exception) {
-            System.out.println(exception.getMessage());
+            initStreams(inputFile, outputFile);
+
+            while (input.hasNext()) {
+                processLine(input.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error! " + inputFile + " not found");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void initStreams(String inputFile, String outputFile) throws IOException {
+        input = new Scanner(new File(inputFile));
+        output = new FileWriter(outputFile, false);
+    }
+
+    private static void processLine(String line) throws IOException {
+        String result;
+        try {
+            result = String.valueOf(calculator.calculateString(line));
+        } catch (CalculatorException exception) {
+            result = exception.getMessage();
+        }
+        output.write(line + " = " + result + "\n");
+        output.flush();
     }
 }
